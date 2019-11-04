@@ -51,3 +51,31 @@ iris_no_missing<-map(iris_with_missing, set_missing) %>% as.data.frame()
 head(iris_no_missing)
 
 ```
+
+##Problem 2
+```{r, message=FALSE, warning=FALSE,}
+setwd("./hw5_data")
+files = list.files()
+all<-map(files, read_csv) %>% 
+  bind_rows() %>% 
+  mutate(name=files,
+         name=str_remove(name,".csv")) %>% 
+  separate(name, c('arm', 'subject'), sep="_") %>% 
+  select(subject, arm, everything()) %>% 
+  pivot_longer(week_1:week_8,
+               names_to = "week",
+               values_to="values") %>% 
+  mutate(week=str_remove(week,"week_"),
+         week=as.numeric(week),
+         subject=as.numeric(subject))
+
+head(all)
+  
+```
+Spaghetti plot
+```{r}
+all %>% ggplot(aes(x = week, y = values,  group=interaction(subject, arm), color = arm)) +
+  geom_line() +
+  geom_point()+ 
+  viridis::scale_fill_viridis(discrete = TRUE)
+```
