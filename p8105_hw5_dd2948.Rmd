@@ -1,0 +1,53 @@
+---
+title: "p8105_hw5_dd2948"
+author: "David DeStephano"
+date: "November 3, 2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include=FALSE}
+library(tidyverse)
+library(purrr)
+```
+
+```{r}
+set.seed(10)
+
+iris_with_missing = iris %>% 
+  map_df(~replace(.x, sample(1:150, 20), NA)) %>%
+  mutate(Species = as.character(Species))
+```
+
+##Problem 1
+```{r}
+set_missing <- function(x) {
+  if(is.numeric(x)){
+    #x = replace_na(x, round(mean(x, na.rm=TRUE), digits=1))
+    x[is.na(x)] <- round(mean(x, na.rm=TRUE))
+    return(x)
+  }
+  else if (is.character(x)) {
+    #x = replace_na(x,"virginica")
+    x[is.na(x)] <- "virginica"
+    return(x)
+  }
+}
+
+#map(iris_with_missing, set_missing) 
+
+```
+
+ORIGNAL
+```{r}
+head(iris_with_missing)
+```
+VS
+```{r}
+iris_no_missing<-map(iris_with_missing, set_missing) %>% as.data.frame()
+head(iris_no_missing)
+
+```
