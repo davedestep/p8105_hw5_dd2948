@@ -53,6 +53,8 @@ head(iris_no_missing)
 ```
 We can see that this method still needs some work, as the numeric values are replaced with the mean for ALL types. It would be better to replace the missing value with the mean for that specific flower type, we could achieve this with a group by statement in the function.
 
+As an aside, this is not the best way to deal with missing variables. Multiple imputation would be a more accurate and statistically rigorous approach.
+
 ##Problem 2
 ```{r, message=FALSE, warning=FALSE,}
 setwd("./hw5_data")
